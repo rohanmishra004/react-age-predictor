@@ -6,31 +6,27 @@ import axios from 'axios';
 
 
 function App() {
-  const [fact, setFact] = useState("")
-  const [isloading, setisLoading] = useState(true)
-
+  const [age, setAge] = useState(0)
+  const [name, setName] = useState('')
   const fetchData = () => {
-    axios.get("https://catfact.ninja/fact?max_length=140")
-      .then(res => {
-        setFact(res.data.fact)
-        setisLoading(false)
-      })
+    axios.get(`https://api.agify.io/?name=${ name }`).then(res => {
+      setAge(res.data.age)
+    })
   }
 
-  useEffect(() => {
-    fetchData()
-  }, [])
+
 
 
 
   return (
     <>
-      {isloading && <p>Loading Page...</p>}
-      <button onClick={fetchData}>Generate Random catfacts</button>
-      {fact && <p> {fact}</p>}
+      <input type="text" onChange={(e) => {
+        setName(e.target.value)
+      }} />
+      <button onClick={fetchData}>Predict Age</button>
+      <h1>Predicted Age::{age}</h1>
     </>
-
-  );
+  )
 }
 
 export default App;
